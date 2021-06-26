@@ -1,0 +1,14 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+a {
+  color: initial;
+  text-decoration: none;
+}
+
+input:focus {
+  outline: none;
+}
+/*# sourceMappingURL=reboot.css.map */

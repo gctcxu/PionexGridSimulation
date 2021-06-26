@@ -1,0 +1,80 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/earlyaccess/cwtexyen.css");
+html {
+  -ms-touch-action: none;
+      touch-action: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  font-size: 1rem;
+  line-height: 1.5;
+  -ms-touch-action: none;
+      touch-action: none;
+  font-family: Microsoft YaHei, 微软雅黑, 黑体, 宋体, Microsoft JhengHei, 华文细黑, STHeiti, MingLiu, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.h1,
+h1 {
+  font-size: 2.5rem;
+}
+
+.h2,
+h2 {
+  font-size: 2rem;
+}
+
+.h3,
+h3 {
+  font-size: 1.75rem;
+}
+
+.h4,
+h4 {
+  font-size: 1.5rem;
+}
+
+.h5,
+h5 {
+  font-size: 1.25rem;
+}
+
+.font-l {
+  font-size: 1.25rem;
+}
+
+.font-m {
+  font-size: 1rem;
+}
+
+.font-sm {
+  font-size: 0.75rem;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  overflow: hidden;
+  vertical-align: -0.15em;
+  fill: currentColor;
+}
+
+.icon.icon-big {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+/*# sourceMappingURL=typography.css.map */

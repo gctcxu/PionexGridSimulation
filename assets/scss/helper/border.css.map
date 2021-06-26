@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,YAAY,CAAC;EACX,YAAY,EAAE,eAAe;CAS9B;;AAVD,AAGE,YAHU,AAGT,QAAQ,CAAC;EACR,YAAY,EAAE,eAAe;CAC9B;;AALH,AAOE,YAPU,AAOT,OAAO,CAAC;EACP,YAAY,EAAE,eAAe;CAC9B",
+    "sources": [
+        "border.scss"
+    ],
+    "names": [],
+    "file": "border.css"
+}

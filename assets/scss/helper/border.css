@@ -1,0 +1,12 @@
+.border-gray {
+  border-color: #ccc !important;
+}
+
+.border-gray::before {
+  border-color: #ccc !important;
+}
+
+.border-gray::after {
+  border-color: #ccc !important;
+}
+/*# sourceMappingURL=border.css.map */

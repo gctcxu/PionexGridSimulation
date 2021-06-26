@@ -1,0 +1,64 @@
+// base color
+$primary-color: #9d0801;
+$secondary-color: #ff4037;
+$flash-color: #9be7ad;
+$third-color: #0ebd71;
+$win-color: #000;
+$lose-color: red;
+$cancel-order-color: #865702;
+$warning-color: red;
+$primary-linear: #0ebd71;
+$status-color: #f00;
+// action-color
+$primary-action-color: #fb3232;
+
+// base gray color
+$primary-gray-color: #333;
+$secondary-gray-color: #666;
+$inactive-gray-color: #999;
+$third-gray-color: #f0f0f0;
+$fourth-gray-color: #aeaeae;
+
+// spec background style
+$color-marked: linear-gradient(225deg, $primary-color 0.6rem, transparent 0);
+
+// linear color
+$confirm-color: linear-gradient(to right, #d43730, #9d0801);
+$confirm-vertical-color: linear-gradient(#d43730, #9d0801);
+$header-color: linear-gradient(to left, #11a78f, #0ebd71);
+$more-color: linear-gradient(to right, #ffeb70, #ffaa2c);
+//$confirm-color: linear-gradient(#11A78F, #0EBD71);
+$linear-color: linear-gradient(180deg, $primary-color, $primary-linear);
+$flash-linear: linear-gradient(#0ebd71, #9de8ae);
+
+$search-color: linear-gradient(90deg, #f2ca78 0%, #dfa222 100%);
+
+// font size
+$font-xs: 12px;
+$font-s: 13px;
+$font-m: 14px;
+$font-ml: 15px;
+$font-l: 16px;
+$font-xl: 17px;
+$font-xxl: 18px;
+
+// global components attribute
+$header-height: 3rem;
+$footer-height: 3.5rem;
+$footer-offset-height: 1rem;
+$heart-footer-height: 3rem;
+$sidebar-width: 10rem;
+
+// box-shadow
+$primary-box-shadow: 0 0 5px #00000029;
+
+// z-index
+$z-header: 10;
+$z-search-bar:10;
+$z-footer: 1000;
+$z-register-dialog: 2002;
+$z-login-dialog: 2002;
+$z-password-outdated-dialog: 10000;
+
+//border-radius
+$confirm-radius: 0.3rem;

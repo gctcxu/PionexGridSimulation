@@ -1,0 +1,105 @@
+// shadow
+%shadow-b {
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.16);
+}
+
+%shadow-b6 {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+}
+
+%shadow-t {
+  box-shadow: 0 -3px 4px rgba(0, 0, 0, 0.16);
+}
+
+// font
+%number-font-family {
+  font-family: times, Arial, sans-serif;
+}
+
+%headline-top {
+  padding: 1px 7px;
+  background: #fff;
+  color: #ff8c3f;
+  border-radius: 3px;
+  border: 1px solid #ff8c3f;
+}
+
+%dialog-style {
+  .d-dialog-hd {
+    background: $header-color;
+  }
+
+  .van-picker {
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 0 15px;
+  }
+
+  .van-picker__toolbar {
+    margin-bottom: 15px;
+  }
+
+  .van-dialog__cancel {
+    border: 1px solid $primary-color;
+    border-radius: 5px;
+    color: $primary-color;
+
+    .van-button__text {
+      color: $primary-color;
+    }
+
+    &::before {
+      display: none;
+    }
+  }
+
+  .van-dialog__confirm {
+    background: $confirm-color;
+    border-radius: 5px;
+
+    .van-button__text {
+      color: #fff;
+    }
+
+    &::before {
+      display: none;
+    }
+  }
+
+  .van-picker__confirm {
+    background: $confirm-color;
+    border-radius: 5px;
+    color: #fff;
+  }
+
+  .van-dialog__footer {
+    padding: 15px;
+
+    .van-button {
+      + .van-button {
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+%popup-style {
+  .van-popup {
+    .title {
+      background: $header-color;
+      color: #fff;
+
+      .iconfont {
+        color: #fff;
+      }
+    }
+
+    .popup-confirm {
+      height: 48px;
+      margin: 0 15px 15px;
+      background: $confirm-color;
+      color: #fff;
+      border-radius: 5px;
+    }
+  }
+}

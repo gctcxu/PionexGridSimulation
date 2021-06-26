@@ -1,0 +1,454 @@
+//@import './vant.scss';
+
+@media screen and (min-width: 560px) {
+  html,
+  body {
+    margin: 0 auto;
+  }
+}
+
+body {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  z-index: 100;
+  transform-style: preserve-3d;
+  width: 100%;
+  // height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  user-select: none;
+}
+
+html {
+  touch-action: none;
+  background-color: #fff;
+  -webkit-text-size-adjust: 100%;
+}
+
+.main {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8rem;
+  z-index: 200;
+}
+
+body[class*='theme'] {
+  font-size: 0.75rem;
+}
+
+.theme-white {
+
+  $themeColor: #333;
+
+  background: #f0f0f0;
+  color: $themeColor;
+
+  a {
+    color: $themeColor;
+  }
+
+  .win-amount {
+    color: $win-color !important;
+  }
+
+  .lose-amount {
+    color: $lose-color !important;
+  }
+
+  .cancel-order {
+    color: $cancel-order-color !important;
+  }
+
+  .text-ellipsis {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .d-dialog {
+    @extend %dialog-style;
+
+    top: 50%;
+    width: 346px;
+    border-radius: 0.5rem !important;
+
+    .d-dialog-hd {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 50px;
+      padding: 0 0.5rem;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      border-bottom: 1px solid #f0f0f0;
+
+      > .close {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        color: #fff;
+        font-weight: 400;
+      }
+    }
+
+    .d-dialog-bd {
+      font-size: 14px;
+    }
+
+    .van-dialog__footer--buttons {
+      .van-button {
+        flex: 1;
+        padding: 0;
+        font-size: $font-m;
+        color: #333;
+      }
+    }
+  }
+}
+
+.number-input {
+  border: none;
+  background: transparent;
+  font-size: 0.75rem;
+}
+
+.all-red-point {
+  box-shadow: inset -1px -1px 2px #9c2e23;
+  z-index: 1;
+}
+
+.v-required {
+  &::before {
+    display: inline-block;
+    color: #f5222d;
+    font-size: 12px;
+    font-family: SimSun, sans-serif;
+    line-height: 1;
+    content: '*';
+  }
+}
+
+/* page-transition */
+.slide-left-enter-active {
+  animation: slide-left 0.2s;
+}
+
+.slide-left-leave,
+.slide-left-leave-active,
+.slide-left-leave-to {
+  animation: slide-right 0.2s;
+}
+
+.fade-leave {
+  opacity: 1;
+}
+
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  transition: 0.2s;
+}
+
+.fade-enter-to {
+  opacity: 1;
+}
+
+/* toast */
+.van-toast.van-toast--text {
+  padding: 0.9rem;
+  font-size: 1rem;
+}
+
+.slide-down-enter-active {
+  animation: slide-down 0.3s;
+}
+
+.slide-down-leave,
+.slide-down-leave-active,
+.slide-down-leave-to {
+  animation: slide-down 0.3s;
+}
+
+.side-show {
+  transform: translateX(-$sidebar-width);
+}
+
+#__nuxt {
+  height: 100%;
+  transition: transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86) 0s;
+}
+
+#__layout {
+  height: 100%;
+}
+
+.full-screen {
+  height: 100%;
+}
+
+// 無法用d-dialog 的
+.d-dialog-outer {
+  top: 50%;
+  border-radius: 3px;
+
+  .d-dialog-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 3.125rem;
+    border-bottom: 0.05rem solid #ebebeb;
+    border-radius: 0.1875rem 0.1875rem 0 0;
+    font-weight: 600;
+    font-size: 1rem;
+
+    .iconfont {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      color: #fff;
+      font-weight: 400;
+      transform: translateY(-50%);
+    }
+  }
+
+  .d-dialog-body {
+    font-size: 14px;
+    width: 100%;
+    background: #fff;
+  }
+
+  .d-dialog-footer {
+    padding: 15px;
+    text-align: center;
+    background: #fff;
+    border-radius: 0 0 3px 3px;
+
+    span {
+      display: inline-block;
+      width: 100%;
+      height: 50px;
+      position: relative;
+      bottom: 0;
+      font-size: 16px;
+      color: #fff;
+      background: $confirm-color;
+      border-radius: 5px;
+      line-height: 50px;
+    }
+  }
+}
+
+.van-dialog {
+  border-radius: 3px !important;
+
+  &.switch {
+    border-radius: 0.2rem;
+
+    .d-dialog-hd {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: $header-color;
+      height: 3.125rem;
+      line-height: 2.375rem;
+      padding: 0 0.5rem;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      border-bottom: 0.0625rem solid #f0f0f0;
+    }
+
+    .d-dialog-bd {
+      .van-picker {
+        display: flex;
+        flex-direction: column-reverse;
+        padding: 0 20px;
+      }
+
+      .van-picker__cancel {
+        display: none;
+      }
+
+      .van-picker-column__item--selected {
+        color: $primary-color;
+      }
+
+      .van-picker-column__item {
+        font-size: 14px;
+
+        &:not(:first-of-type) {
+          border: none;
+        }
+
+        // &--selected {
+        //   color: #f36257;
+        // }
+      }
+
+      .van-picker__frame {
+        &::after {
+          border-width: 0.1rem 0;
+          border-color: #f0f0f0;
+        }
+      }
+
+      .van-picker__toolbar {
+        padding: 15px 0;
+        height: auto;
+
+        &::after {
+          border-top: 2px solid #f0f0f0;
+        }
+      }
+
+      .van-picker__confirm {
+        flex: 1;
+        padding: 0;
+        font-size: 14px;
+        color: #fff;
+        background: $confirm-color;
+        border-radius: 5px;
+      }
+
+      /deep/.van-picker-column__item--selected {
+        color: $primary-color;
+      }
+    }
+  }
+}
+
+.arrow {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+
+  &.up {
+    border-bottom: 5px solid;
+  }
+
+  &.down {
+    border-top: 5px solid;
+  }
+}
+
+.zoom-enter-active {
+  animation-name: bounceIn;
+  animation-duration: 700ms;
+}
+
+.zoom-leave {
+  opacity: 1;
+  display: inline-block;
+  visibility: visible;
+}
+
+.zoom-leave-active {
+  animation-name: bounceOut;
+  animation-duration: 700ms;
+}
+
+.zoom-leave-to {
+  opacity: 0;
+}
+
+@keyframes slide-left {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slide-down {
+  0% {
+    transform: height 0;
+  }
+
+  100% {
+    transform: height 100%;
+  }
+}
+
+@keyframes slide-right {
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes zoomBounceIn {
+  from, 20%, 40%, 60%, 80%, to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  0% {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+
+  20% {
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+
+  40% {
+    transform: scale3d(0.9, 0.9, 0.9);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale3d(1.03, 1.03, 1.03);
+  }
+
+  80% {
+    transform: scale3d(0.97, 0.97, 0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+
+@media screen and (orientation: portrait) {
+  body {
+    position: fixed;
+    bottom: 0;
+  }
+}
+
+/* landscape */
+@media screen and (orientation: landscape) {
+  body {
+    position: fixed;
+    bottom: 0;
+  }
+}

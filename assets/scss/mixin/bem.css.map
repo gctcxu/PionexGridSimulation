@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "bem.scss"
+    ],
+    "names": [],
+    "file": "bem.css"
+}

@@ -1,0 +1,12 @@
+.van-toast {
+  &.van-toast {
+    &--text {
+      padding: 0.25rem;
+      font-size: 0.75rem;
+    }
+  }
+}
+
+.van-number-keyboard {
+  z-index: 3000 !important;
+}

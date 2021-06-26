@@ -1,0 +1,35 @@
+.border-gray {
+  border-color: #ccc !important;
+
+  &::before {
+    border-color: #ccc !important;
+  }
+
+  &::after {
+    border-color: #ccc !important;
+  }
+}
+
+.border-dark-gray {
+  border-color: #949494 !important;
+
+  &::before {
+    border-color: #949494 !important;
+  }
+
+  &::after {
+    border-color: #949494 !important;
+  }
+}
+
+.border-right{
+  border-right: 0.05rem solid #dadada;
+}
+
+.border-top{
+  border-top: 0.05rem solid #dadada;
+}
+
+.border-bottom{
+  border-bottom: 0.05rem solid #dadada;
+}

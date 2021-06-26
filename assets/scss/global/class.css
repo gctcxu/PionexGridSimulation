@@ -1,0 +1,13 @@
+.main {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  font-size: 0.8rem;
+}
+
+.theme-white {
+  background: #f0f0f0;
+}
+/*# sourceMappingURL=class.css.map */

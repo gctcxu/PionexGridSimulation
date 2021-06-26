@@ -1,0 +1,84 @@
+//m-p
+.mx-auto {
+  margin: 0 auto;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.mr-auto {
+  margin-right: auto;
+}
+
+//margin-transform center
+
+.mx-center {
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+.my-center {
+  margin-top: 50%;
+  transform: translateY(-50%);
+}
+
+$mp-map: (
+  0: 0,
+  1: 0.25rem,
+  2: 0.5rem,
+  3: 0.75rem,
+  4: 1rem,
+  5: 2rem,
+  6: 3rem
+);
+
+@each $name, $value in $mp-map {
+  .ma-#{$name} {
+    margin: $value !important;
+  }
+
+  .mt-#{$name},
+  .my-#{$name} {
+    margin-top: $value !important;
+  }
+
+  .mb-#{$name},
+  .my-#{$name} {
+    margin-bottom: $value !important;
+  }
+
+  .ml-#{$name},
+  .mx-#{$name} {
+    margin-left: $value !important;
+  }
+
+  .mr-#{$name},
+  .mx-#{$name} {
+    margin-right: $value !important;
+  }
+
+  .pa-#{$name} {
+    padding: $value !important;
+  }
+
+  .pt-#{$name},
+  .py-#{$name} {
+    padding-top: $value !important;
+  }
+
+  .pb-#{$name},
+  .py-#{$name} {
+    padding-bottom: $value !important;
+  }
+
+  .pl-#{$name},
+  .px-#{$name} {
+    padding-left: $value !important;
+  }
+
+  .pr-#{$name},
+  .px-#{$name} {
+    padding-right: $value !important;
+  }
+}

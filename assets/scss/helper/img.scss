@@ -1,0 +1,23 @@
+.img-fluid {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.img-fluid-flex {
+  flex: 0 0 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+@mixin img-rwd($width) {
+  width: $width;
+  max-width: $width;
+  height: auto;
+}
+
+@mixin img-rwd-flex($width) {
+  flex: 0 0 $width;
+  max-width: $width;
+  height: auto;
+}

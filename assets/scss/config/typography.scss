@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/earlyaccess/cwtexyen.css');
+$base-font-size: 1rem;
+$base-line-height: 1.5;
+
+//font
+$font-title: helvetica neue, regular;
+$font-Neue: helvetica neue, regular;
+$font-times: times, regular;
+
+html {
+  font-family:
+    Microsoft YaHei,
+    微软雅黑,
+    黑体,
+    宋体,
+    Microsoft JhengHei,
+    华文细黑,
+    STHeiti,
+    MingLiu;
+  -webkit-font-smoothing: antialiased;
+  touch-action: none;
+  font-size: 16px;
+}
+
+body {
+  font-family: -apple-system-font, Arial, PMingLiU, sans-serif;
+  font-size: $base-font-size;
+  line-height: $base-line-height;
+  touch-action: none;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.h1,
+h1 {
+  font-size: 20px;
+}
+
+.h2,
+h2 {
+  font-size: 18px;
+}
+
+.h3,
+h3 {
+  font-size: 16px;
+}
+
+.h4,
+h4 {
+  font-size: 14px;
+}
+
+.h5,
+h5 {
+  font-size: 12px;
+}
+
+.font-l {
+  font-size: 1.25rem;
+}
+
+.font-m {
+  font-size: 1rem;
+}
+
+.font-sm {
+  font-size: 0.75rem;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  overflow: hidden;
+  vertical-align: -0.15em;
+  fill: currentColor;
+}
+
+.icon.icon-big {
+  width: 2.5rem;
+  height: 2.5rem;
+}
