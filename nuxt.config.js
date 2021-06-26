@@ -7,7 +7,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: '網格交易模擬',
+    title: '派網網格交易模擬計算機',
     htmlAttrs: {
       lang: 'en',
     },

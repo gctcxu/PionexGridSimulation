@@ -1,20 +1,9 @@
-# miningFrontend
+# 派網網格交易模擬計算機
 
-## Build Setup
+可以計算派網的網格交易機器人
 
-```bash
-# install dependencies
-$ npm install
-
-# serve with hot reload at localhost:3000
-$ npm run dev
-
-# build for production and launch server
-$ npm run build
-$ npm run start
-
-# generate static project
-$ npm run generate
-```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+輸入:
+- 最低金額
+- 最高金額
+- 網格數量
+- 投入資金
