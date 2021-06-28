@@ -28,7 +28,7 @@
         <button @click="reset()">
           清空資料
         </button>
-        <button @click="singleSimulate()">
+        <button @click="simulate()">
           開始模擬
         </button>
       </div>
@@ -38,7 +38,7 @@
           網格數量起訖:<input v-model.number="optimizationForm.minGridNumber" type="number">~<input v-model.number="optimizationForm.maxGridNumber" type="number">
         </div>
         <div class="grid-input-form__action">
-          <button @click="multipleOptimize()">
+          <button @click="gridOptimize()">
             最佳化網格數
           </button>
         </div>
@@ -46,13 +46,19 @@
       <div class="range-optimization mt-5">
         <h2>固定網格數量下,找尋最好的區間價位</h2>
         <div class="grid-input-form__input">
-          網格價位範圍:<input v-model.number="form.fund" type="number">~<input v-model.number="form.fund" type="number">
+          網格價位範圍:<input v-model.number="rangeOptimizationForm.bottomPrice" type="number">~<input v-model.number="rangeOptimizationForm.topPrice" type="number">
         </div>
         <div class="grid-input-form__input">
-          網格數量:<input v-model.number="form.fund" type="number">
+          網格數量:<input v-model.number="rangeOptimizationForm.gridNumber" type="number">
+        </div>
+        <div class="grid-input-form__input">
+          階梯:<input v-model.number="rangeOptimizationForm.step" type="number">
+        </div>
+        <div class="grid-input-form__input">
+          投資本金:<input v-model.number="rangeOptimizationForm.fund" type="number">
         </div>
         <div class="grid-input-form__action">
-          <button>
+          <button @click="rangeOptimize()">
             最佳化網格範圍
           </button>
         </div>
@@ -202,6 +208,13 @@ export default {
         maxGridNumber: 0,
       },
 
+      rangeOptimizationForm: {
+        gridNumber: 0,
+        bottomPrice: 0,
+        topPrice: 0,
+        step: 10,
+      },
+
       numberOfGrid: 0,
 
       startTime: 0,
@@ -340,7 +353,7 @@ export default {
 
       vm.lock = true;
     },
-    async singleSimulate() {
+    async simulate() {
       const vm = this;
 
       vm.numberOfGrid = vm.form.numberOfGrid;
@@ -360,7 +373,7 @@ export default {
 
       vm.showStatistics = true;
     },
-    async multipleOptimize() {
+    async gridOptimize() {
       const vm = this;
       const queue = [];
       const simulateList = [];
@@ -389,10 +402,47 @@ export default {
 
       simulateList.sort((a, b) => a.grid - b.grid);
 
-      vm.drawGridGraph(simulateList);
+      vm.drawLineGridGraph(simulateList);
+    },
+    async rangeOptimize() {
+      const vm = this;
+
+      const { bottomPrice, topPrice } = vm.rangeOptimizationForm;
+      const cellList = [];
+
+      const queue = [];
+
+      if (!tradeList || !tradeList.length) {
+        await vm.fetchData();
+      }
+
+      for (let i = bottomPrice; i <= topPrice; i += vm.rangeOptimizationForm.step) {
+        for (let j = i + vm.rangeOptimizationForm.step; j <= topPrice; j += vm.rangeOptimizationForm.step) {
+          // eslint-disable-next-line no-loop-func
+          const task = (async () => {
+            const result = await vm.calculateGridSimulation({
+              numberOfGrid: vm.rangeOptimizationForm.gridNumber,
+              topPrice: j,
+              bottomPrice: i,
+              tradeList,
+              fund: vm.rangeOptimizationForm.fund,
+              fee: vm.fee,
+            });
+
+            const cell = [i, j, result.summary.revenue];
+
+            cellList.push(cell);
+          })();
+
+          queue.push(task);
+        }
+      }
+
+      await Promise.all(queue);
+      vm.drawHeatmapGraph(bottomPrice, topPrice, vm.rangeOptimizationForm.step, cellList);
     },
     // 畫網格與收益的折線圖
-    drawGridGraph(simulateList) {
+    drawLineGridGraph(simulateList) {
       const vm = this;
       let dom = vm.$refs.gridRevenue;
 
@@ -407,6 +457,79 @@ export default {
         series: [{
           data: simulateList.map((e) => e.revenue),
           type: 'line',
+        }],
+      };
+
+      if (!dom) {
+        vm.showOptimizationGraph = true;
+        vm.$nextTick(() => {
+          dom = vm.$refs.gridRevenue;
+
+          vm.chart = echarts.init(dom);
+          option && vm.chart.setOption(option);
+        });
+      } else {
+        option && vm.chart.setOption(option);
+      }
+    },
+    drawHeatmapGraph(bottomPrice, topPrice, step, cellList) {
+      const vm = this;
+      let dom = vm.$refs.gridRevenue;
+
+      const prices = [];
+
+      for (let i = bottomPrice; i <= topPrice; i += step) {
+        prices.push(i);
+      }
+
+      const max = cellList.reduce((accu, i) => (accu > i[2] ? accu : i[2]), cellList[0][2]);
+      const min = cellList.reduce((accu, i) => (accu < i[2] ? accu : i[2]), cellList[0][2]);
+
+      cellList = cellList.map((e) => ([(e[0] - bottomPrice) / step, (e[1] - bottomPrice) / step, NP.round(e[2], 2)]));
+
+      const option = {
+        tooltip: {
+          position: 'top',
+        },
+        grid: {
+          height: '50%',
+          top: '10%',
+        },
+        xAxis: {
+          type: 'category',
+          data: prices,
+          splitArea: {
+            show: true,
+          },
+        },
+        yAxis: {
+          type: 'category',
+          data: prices,
+          splitArea: {
+            show: true,
+          },
+        },
+        visualMap: {
+          min,
+          max,
+          calculable: true,
+          orient: 'horizontal',
+          left: 'center',
+          bottom: '15%',
+        },
+        series: [{
+          name: 'Punch Card',
+          type: 'heatmap',
+          data: cellList,
+          label: {
+            show: true,
+          },
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
+          },
         }],
       };
 
@@ -459,7 +582,7 @@ export default {
 }
 
 .optimization {
-  height: 300px;
+  height: 55rem;
 }
 
 .grid-revenue-graph {
@@ -469,7 +592,7 @@ export default {
 
 .result {
   position: relative;
-  width: 37.5rem;
+  width: 60rem;
   margin: auto;
 
   /deep/ .van-loading {
