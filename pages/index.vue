@@ -16,7 +16,7 @@
         時間: 起<input v-model="form.startTimeText" type="datetime-local" :disabled="lock"> ~ 迄<input v-model="form.endTimeText" type="datetime-local" :disabled="lock">
       </div>
       <div class="grid-input-form__input">
-        區間下界<input v-model.number="form.bottomPrice" placeholder="" type="number" step="0.01"> ~ 區間上界<input v-model.number="form.topPrice" placeholder="" type="number" step="0.01">
+        區間下界<input v-model.number="form.bottomPrice" placeholder="" type="number" step="0.01" @input="rangeOptimizationForm.bottomPrice = form.bottomPrice"> ~ 區間上界<input v-model.number="form.topPrice" placeholder="" type="number" step="0.01" @input="rangeOptimizationForm.topPrice = form.topPrice">
       </div>
       <div class="grid-input-form__input">
         網格數目:<input v-model.number="form.numberOfGrid" type="number">
@@ -32,6 +32,7 @@
           開始模擬
         </button>
       </div>
+      <!--
       <div class="mt-5">
         <h2>固定價錢範圍下,找尋最好的網格數量</h2>
         <div class="grid-input-form__input">
@@ -43,6 +44,7 @@
           </button>
         </div>
       </div>
+      -->
       <div class="range-optimization mt-5">
         <h2>固定網格數量下,找尋最好的區間價位</h2>
         <div class="grid-input-form__input">
@@ -153,6 +155,7 @@ import dayjs from 'dayjs';
 import NP from 'number-precision';
 import * as echarts from 'echarts';
 import GridSimulationWorker from '@/assets/worker/gridSimulation.worker.js';
+import { Toast } from 'vant';
 
 NP.enableBoundaryChecking(false);
 // eslint-disable-next-line no-extend-native
@@ -168,27 +171,28 @@ Object.defineProperty(Array.prototype, 'remove', {
 
 let tradeList = [];
 
-const list = [{
-  base: 'ETH', quote: 'USDT', label: 'ETH/USDT', type: 'coin',
-},
-{
-  base: 'BTC', quote: 'USDT', label: 'BTC/USDT', type: 'coin',
-},
-{
-  base: 'BNB', quote: 'USDT', label: 'BNB/USDT', type: 'coin',
-},
-{
-  base: 'FTT', quote: 'USDT', label: 'FTT/USDT', type: 'coin',
-},
-{
-  base: 'ADA', quote: 'USDT', label: 'ADA/USDT', type: 'coin',
-},
-{
-  base: 'BNB1M', quote: 'USDT', label: 'BNB1S/USDT', type: 'index',
-},
-{
-  base: 'BNB3P', quote: 'USDT', label: 'BNB3L/USDT', type: 'index',
-}];
+const list = [
+  {
+    base: 'BNB', quote: 'USDT', label: 'BNB/USDT', type: 'coin',
+  },
+  {
+    base: 'ETH', quote: 'USDT', label: 'ETH/USDT', type: 'coin',
+  },
+  {
+    base: 'BTC', quote: 'USDT', label: 'BTC/USDT', type: 'coin',
+  },
+  {
+    base: 'FTT', quote: 'USDT', label: 'FTT/USDT', type: 'coin',
+  },
+  {
+    base: 'ADA', quote: 'USDT', label: 'ADA/USDT', type: 'coin',
+  },
+  {
+    base: 'BNB1M', quote: 'USDT', label: 'BNB1S/USDT', type: 'index',
+  },
+  {
+    base: 'BNB3P', quote: 'USDT', label: 'BNB3L/USDT', type: 'index',
+  }];
 
 export default {
   data() {
@@ -212,7 +216,8 @@ export default {
         gridNumber: 0,
         bottomPrice: 0,
         topPrice: 0,
-        step: 10,
+        step: 0,
+        fund: 1000,
       },
 
       numberOfGrid: 0,
@@ -246,6 +251,9 @@ export default {
 
       // 最佳化
       showOptimizationGraph: false,
+
+      totalWorker: 0,
+      completedWorker: 0,
     };
   },
   computed: {
@@ -272,6 +280,10 @@ export default {
     // vm.endTimeText = '2021-06-07T00:00';
     vm.startTime = dayjs(vm.form.startTimeText).valueOf();
     vm.endTime = dayjs(vm.form.endTimeText).valueOf();
+
+    vm.$root.$on('showTradeDetail', (detail) => {
+      console.log(detail);
+    });
   },
   methods: {
     async calculateGridSimulation({
@@ -314,6 +326,7 @@ export default {
       if (!historyPriceList || historyPriceList.length <= 1) return;
 
       tradeList = [...tradeList, ...historyPriceList];
+
       await vm.prepareData(historyPriceList[historyPriceList.length - 1].date * 1000);
     },
     reset() {
@@ -413,11 +426,29 @@ export default {
       const queue = [];
 
       if (!tradeList || !tradeList.length) {
+        Toast.loading({
+          duration: 0,
+          message: '讀取派網資料中...',
+        });
         await vm.fetchData();
       }
 
+      const max = tradeList.reduce((accu, e) => (accu > e.high ? accu : e.high), 0);
+      const min = tradeList.reduce((accu, e) => (accu < e.low ? accu : e.low), 0);
+
+      vm.totalWorker = 0;
+      vm.completedWorker = 0;
+
+      const toast = Toast.loading({
+        duration: 0,
+        message: `加載中: ${vm.completedWorker}/${vm.totalWorker}`,
+      });
+
       for (let i = bottomPrice; i <= topPrice; i += vm.rangeOptimizationForm.step) {
         for (let j = i + vm.rangeOptimizationForm.step; j <= topPrice; j += vm.rangeOptimizationForm.step) {
+          // eslint-disable-next-line no-continue
+          if (i > max || j < min) continue;
+          vm.totalWorker += 1;
           // eslint-disable-next-line no-loop-func
           const task = (async () => {
             const result = await vm.calculateGridSimulation({
@@ -428,10 +459,13 @@ export default {
               fund: vm.rangeOptimizationForm.fund,
               fee: vm.fee,
             });
+            vm.completedWorker += 1;
 
             const cell = [i, j, result.summary.revenue];
 
             cellList.push(cell);
+
+            toast.message = `加載中: ${vm.completedWorker}/${vm.totalWorker}`;
           })();
 
           queue.push(task);
@@ -439,6 +473,8 @@ export default {
       }
 
       await Promise.all(queue);
+      Toast.clear();
+
       vm.drawHeatmapGraph(bottomPrice, topPrice, vm.rangeOptimizationForm.step, cellList);
     },
     // 畫網格與收益的折線圖
@@ -479,25 +515,36 @@ export default {
       const prices = [];
 
       for (let i = bottomPrice; i <= topPrice; i += step) {
-        prices.push(i);
+        prices.push(NP.strip(i));
       }
 
       const max = cellList.reduce((accu, i) => (accu > i[2] ? accu : i[2]), cellList[0][2]);
       const min = cellList.reduce((accu, i) => (accu < i[2] ? accu : i[2]), cellList[0][2]);
 
-      cellList = cellList.map((e) => ([(e[0] - bottomPrice) / step, (e[1] - bottomPrice) / step, NP.round(e[2], 2)]));
+      cellList = cellList.map((e) => ([(e[0] - bottomPrice) / step, (e[1] - bottomPrice) / step, NP.strip(e[2], 2)]));
 
       const option = {
         tooltip: {
           position: 'top',
+          triggerOn: 'click',
+          formatter(p) {
+            return `<div><p>網格收益:${NP.strip(step * p.data[0] + bottomPrice)}~${NP.strip(step * p.data[1] + bottomPrice)}:${NP.strip(p.data[2])}</p></div>`;
+          },
         },
         grid: {
-          height: '50%',
-          top: '10%',
+          width: '100%',
+          height: '90%',
+          top: '5%',
+          left: '0',
         },
         xAxis: {
           type: 'category',
           data: prices,
+          axisPointer: {
+            label: {
+              precision: 3,
+            },
+          },
           splitArea: {
             show: true,
           },
@@ -505,6 +552,11 @@ export default {
         yAxis: {
           type: 'category',
           data: prices,
+          axisPointer: {
+            label: {
+              precision: 2,
+            },
+          },
           splitArea: {
             show: true,
           },
@@ -561,7 +613,7 @@ export default {
 
 .grid-input-form {
   display: block;
-  width: 37.5rem;
+  width: 40rem;
   margin: 0 auto 2rem;
 
   &__input {
