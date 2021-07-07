@@ -146,6 +146,15 @@
         </div>
       </div>
     </div>
+    <van-dialog v-model="showDetailDialog">
+      <div v-if="selectedDetail && selectedDetail.result && selectedDetail.result.summary" class="wrapper">
+        <div class="block">
+          <div><span>網格收益:</span><span>{{ selectedDetail.result.summary.revenue }}</span></div>
+          <div><span>浮動盈虧:</span><span>{{ selectedDetail.result.summary.fundChange - selectedDetail.result.summary.revenue }}</span></div>
+          <div><span>總收益:</span><span>{{ selectedDetail.result.summary.fundChange }}</span></div>
+        </div>
+      </div>
+    </van-dialog>
   </div>
 </template>
 
@@ -193,6 +202,8 @@ const list = [
   {
     base: 'BNB3P', quote: 'USDT', label: 'BNB3L/USDT', type: 'index',
   }];
+
+const simulationList = [];
 
 export default {
   data() {
@@ -254,6 +265,9 @@ export default {
 
       totalWorker: 0,
       completedWorker: 0,
+
+      showDetailDialog: false,
+      selectedDetail: {},
     };
   },
   computed: {
@@ -281,8 +295,9 @@ export default {
     vm.startTime = dayjs(vm.form.startTimeText).valueOf();
     vm.endTime = dayjs(vm.form.endTimeText).valueOf();
 
-    vm.$root.$on('showTradeDetail', (detail) => {
-      console.log(detail);
+    vm.$root.$on('showDetail', (i, j) => {
+      vm.showDetailDialog = true;
+      vm.selectedDetail = simulationList.find((e) => e.key === `${i}-${j}`);
     });
   },
   methods: {
@@ -296,6 +311,7 @@ export default {
         const receiveMessage = (payload) => {
           result = payload.data;
           worker.removeEventListener('message', receiveMessage);
+          worker.terminate();
           resolve(result);
         };
 
@@ -459,6 +475,14 @@ export default {
               fund: vm.rangeOptimizationForm.fund,
               fee: vm.fee,
             });
+
+            simulationList.push({
+              key: `${NP.strip((i - bottomPrice) / vm.rangeOptimizationForm.step)}-${NP.strip((j - bottomPrice) / vm.rangeOptimizationForm.step)}`,
+              bottomPrice: i,
+              topPrice: j,
+              result,
+            });
+
             vm.completedWorker += 1;
 
             const cell = [i, j, result.summary.revenue];
@@ -528,7 +552,7 @@ export default {
           position: 'top',
           triggerOn: 'click',
           formatter(p) {
-            return `<div><p>網格收益:${NP.strip(step * p.data[0] + bottomPrice)}~${NP.strip(step * p.data[1] + bottomPrice)}:${NP.strip(p.data[2])}</p></div>`;
+            return `<div style="text-align:center;"><p>網格收益:${NP.strip(step * p.data[0] + bottomPrice)}~${NP.strip(step * p.data[1] + bottomPrice)}:${NP.strip(p.data[2])}</p><a onclick="window.$nuxt.$root.$emit('showDetail',${NP.strip(p.data[0])}, ${NP.strip(p.data[1])})">查看</a></div>`;
           },
         },
         grid: {
@@ -798,5 +822,23 @@ export default {
     border-radius: 0;
     background: #c8c9cc;
   }
+}
+
+/deep/ .van-dialog__content{
+  padding: 1rem;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.block {
+  width: 17rem;
+  height: 6.2rem;
+  padding: 1rem;
+  background-color: #fff;
 }
 </style>
