@@ -12,6 +12,7 @@ body {
   z-index: 100;
   transform-style: preserve-3d;
   width: 100%;
+  height: 100%;
   overflow-x: hidden;
   overflow-y: scroll;
   user-select: none;
@@ -191,16 +192,7 @@ body[class*='theme'] {
 }
 
 #__nuxt {
-  height: 100%;
   transition: transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86) 0s;
-}
-
-#__layout {
-  height: 100%;
-}
-
-.full-screen {
-  height: 100%;
 }
 
 // 無法用d-dialog 的

@@ -200,6 +200,18 @@ const list = [
     base: 'BNB1M', quote: 'USDT', label: 'BNB1S/USDT', type: 'index',
   },
   {
+    base: 'BTC1M', quote: 'USDT', label: 'BTC1S/USDT', type: 'index',
+  },
+  {
+    base: 'ETH1M', quote: 'USDT', label: 'ETH1S/USDT', type: 'index',
+  },
+  {
+    base: 'BTC3P', quote: 'USDT', label: 'BTC3L/USDT', type: 'index',
+  },
+  {
+    base: 'ETH3P', quote: 'USDT', label: 'ETH3L/USDT', type: 'index',
+  },
+  {
     base: 'BNB3P', quote: 'USDT', label: 'BNB3L/USDT', type: 'index',
   }];
 

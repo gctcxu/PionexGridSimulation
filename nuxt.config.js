@@ -207,7 +207,7 @@ export default {
         }),
       ],
     },
-    analyze: true,
+    analyze: false,
     assetFilter(assetFilename) {
       return assetFilename.endsWith('.js');
     },
