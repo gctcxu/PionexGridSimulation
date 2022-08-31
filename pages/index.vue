@@ -197,6 +197,27 @@ const list = [
     base: 'ADA', quote: 'USDT', label: 'ADA/USDT', type: 'coin',
   },
   {
+    base: 'SOL', quote: 'USDT', label: 'SOL/USDT', type: 'coin',
+  },
+  {
+    base: 'CRO', quote: 'USDT', label: 'CRO/USDT', type: 'coin',
+  },
+  {
+    base: 'SAND', quote: 'USDT', label: 'SAND/USDT', type: 'coin',
+  },
+  {
+    base: 'MANA', quote: 'USDT', label: 'MANA/USDT', type: 'coin',
+  },
+  {
+    base: 'EOS', quote: 'USDT', label: 'EOS/USDT', type: 'coin',
+  },
+  {
+    base: 'MATIC', quote: 'USDT', label: 'MATIC/USDT', type: 'coin',
+  },
+  {
+    base: 'ADA3P', quote: 'USDT', label: 'ADA3L/USDT', type: 'coin',
+  },
+  {
     base: 'BNB1M', quote: 'USDT', label: 'BNB1S/USDT', type: 'index',
   },
   {
@@ -213,8 +234,11 @@ const list = [
   },
   {
     base: 'BNB3P', quote: 'USDT', label: 'BNB3L/USDT', type: 'index',
-  }];
-
+  },
+  {
+    base: 'XRP3P', quote: 'USDT', label: 'XRP3L/USDT', type: 'index',
+  },
+];
 const simulationList = [];
 
 export default {
